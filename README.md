@@ -1,14 +1,21 @@
-docker system prune -a
+pip-review --local --auto
 pip freeze > requirements.txt
-sudo docker build --no-cache -t sellinios/backend:latest .
-sudo docker push sellinios/backend:latest
-sudo docker build --no-cache -t sellinios/frontend:latest .
-sudo docker push sellinios/frontend:latest
-microk8s kubectl set image deployment/django-deployment django=sellinios/backend:latest -n backend
-microk8s kubectl set image deployment/react-deployment react=sellinios/frontend:latest -n backend
-microk8s kubectl delete deployments --all -n backend
-sudo microk8s enable dns
-sudo microk8s enable ingress
-sudo microk8s enable cert-manager
-microk8s kubectl apply -f production.yaml
-microk8s kubectl get pods -n backend
+docker info | grep Swarm
+docker service ls
+docker stack deploy -c docker-stack.yml aethra
+./deploy-swarm.sh
+
+docker service logs aethra_backend
+docker service logs aethra_db
+docker service logs aethra_frontend
+docker service logs aethra_nginx
+
+docker service inspect aethra_backend
+docker service inspect aethra_db
+docker service inspect aethra_frontend
+docker service inspect aethra_nginx
+
+tree -L 5 -I 'node_modules|build|venv|staticfiles'
+
+docker stack rm aethra
+docker system prune -a
