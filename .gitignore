@@ -147,6 +147,5 @@ local_settings.py
 *.sql
 *.sql.gz
 
-# Ignore system files
-.DS_Store
-Thumbs.dbcertbot/
+# Ignore certbot folder and its contents
+certbot/
