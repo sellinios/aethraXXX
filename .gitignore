@@ -149,4 +149,4 @@ local_settings.py
 
 # Ignore system files
 .DS_Store
-Thumbs.db
+Thumbs.dbcertbot/
