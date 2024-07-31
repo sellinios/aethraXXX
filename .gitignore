@@ -149,3 +149,4 @@ local_settings.py
 
 # Ignore certbot folder and its contents
 certbot/
+node_modules/

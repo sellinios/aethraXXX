@@ -19,3 +19,6 @@ tree -L 5 -I 'node_modules|build|venv|staticfiles'
 
 docker stack rm aethra
 docker system prune -a
+
+docker exec -it $(docker ps -q -f name=aethra_backend.1) /bin/bash
+python manage.py migrate
