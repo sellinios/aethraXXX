@@ -9,7 +9,7 @@ services:
     environment:
       - POSTGRES_DB=aethradb
       - POSTGRES_USER=sellinios
-      - POSTGRES_PASSWORD=4f8ca5020f68726194ce7ac3bf2f4596
+      - POSTGRES_PASSWORD=234b1daaa2b92302115310b523cfe509
     networks:
       - aethra_network
 
@@ -19,12 +19,12 @@ services:
       replicas: 2
     environment:
       - DJANGO_SETTINGS_MODULE=backend.settings.production
-      - DJANGO_SECRET_KEY=e7451647871013eb6098893fc7a30c02118a13326bdf96c2bfc5d67b19ce83e1
+      - DJANGO_SECRET_KEY=ebde182e0c5e63e308885cf375c7d87636d2b61755dd3f9265b4ecf2109a7657
       - DJANGO_DEBUG=False
       - DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1,kairos.gr,www.kairos.gr
       - POSTGRES_DB=aethradb
       - POSTGRES_USER=sellinios
-      - POSTGRES_PASSWORD=4f8ca5020f68726194ce7ac3bf2f4596
+      - POSTGRES_PASSWORD=234b1daaa2b92302115310b523cfe509
       - POSTGRES_HOST=db
       - POSTGRES_PORT=5432
       - CORS_ALLOWED_ORIGINS=https://kairos.gr,https://www.kairos.gr
