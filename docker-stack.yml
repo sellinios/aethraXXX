@@ -7,7 +7,7 @@ services:
     environment:
       - POSTGRES_DB=aethradb
       - POSTGRES_USER=sellinios
-      - POSTGRES_PASSWORD=4c3548afe4d70c234800b360bd26736c
+      - POSTGRES_PASSWORD=0c5be423f600fafa2f8b23da3f239489
     command: >
       bash -c "
         echo 'CREATE DATABASE aethradb;' > /docker-entrypoint-initdb.d/init.sql &&
@@ -26,12 +26,12 @@ services:
       replicas: 2
     environment:
       - DJANGO_SETTINGS_MODULE=backend.settings.production
-      - DJANGO_SECRET_KEY=492d5455ab955c17a895f765ecad17256c18cb95584613265bce6701e91ef9c3
+      - DJANGO_SECRET_KEY=0d588d1cc009bcd496631c7cfb0e6d5facb1b87878e3f5db0fe351d7dd707394
       - DJANGO_DEBUG=False
       - DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1,kairos.gr,www.kairos.gr
       - POSTGRES_DB=aethradb
       - POSTGRES_USER=sellinios
-      - POSTGRES_PASSWORD=4c3548afe4d70c234800b360bd26736c
+      - POSTGRES_PASSWORD=0c5be423f600fafa2f8b23da3f239489
       - POSTGRES_HOST=db
       - POSTGRES_PORT=5432
       - CORS_ALLOWED_ORIGINS=https://kairos.gr,https://www.kairos.gr
@@ -53,7 +53,7 @@ services:
       - aethra_network
 
   nginx:
-    image: nginx:alpine
+    image: nginx:latest
     ports:
       - "80:80"
       - "443:443"

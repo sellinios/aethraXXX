@@ -2,9 +2,19 @@
 *.log
 *.pot
 *.pyc
-__pycache__
+__pycache__/
 db.sqlite3
-media
+media/
+staticfiles/
+local_settings.py
+
+# Ignore Django migration files, but not the __init__.py files
+**/migrations/*.py
+!**/migrations/__init__.py
+
+# Ignore database dumps
+*.sql
+*.sql.gz
 
 # Backup files
 *.bak
@@ -14,7 +24,8 @@ media
 *$py.class
 
 # Distribution / packaging
-.Python build/
+.Python
+build/
 develop-eggs/
 dist/
 downloads/
@@ -49,7 +60,7 @@ coverage.xml
 .hypothesis/
 
 # Jupyter Notebook
-.ipynb_checkpoints
+.ipynb_checkpoints/
 
 # pyenv
 .python-version
@@ -70,7 +81,7 @@ env.bak/
 venv.bak/
 
 # mkdocs documentation
-/site
+/site/
 
 # mypy
 .mypy_cache/
@@ -85,8 +96,8 @@ venv.bak/
 # sftp configuration file
 sftp-config.json
 
-# Package control specific files Package
-Control.last-run
+# Package control specific files
+Package Control.last-run
 Control.ca-list
 Control.ca-bundle
 Control.system-ca-bundle
@@ -98,19 +109,19 @@ GitHub.sublime-settings
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
-.history
+.history/
 
 # React / Node.js
 # dependencies
-/node_modules
-/.pnp
+node_modules/
+.pnp/
 .pnp.js
 
 # testing
-/coverage
+coverage/
 
 # production
-/build
+build/
 
 # misc
 .DS_Store
@@ -130,23 +141,5 @@ docker-compose.override.yml
 .env*
 !.env.example
 
-# Ignore Django migration files
-**/migrations/*.py
-!**/migrations/__init__.py
-
-# Ignore static files collected by Django
-/staticfiles/
-
-# Ignore media files uploaded by users
-/media/
-
-# Ignore any local settings files
-local_settings.py
-
-# Ignore database dumps
-*.sql
-*.sql.gz
-
 # Ignore certbot folder and its contents
 certbot/
-node_modules/
