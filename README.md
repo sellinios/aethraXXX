@@ -2,6 +2,8 @@ pip-review --local --auto
 pip freeze > requirements.txt
 docker info | grep Swarm
 docker service ls
+docker ps 
+docker exec -it XXXX_ID bash
 docker stack deploy -c docker-stack.yml aethra
 ./deploy-swarm.sh
 
