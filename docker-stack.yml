@@ -11,13 +11,14 @@ services:
       - POSTGRES_PASSWORD=faidra6946020623
     networks:
       - aethra_network
+
   backend:
     image: aethra_backend:latest
     deploy:
       replicas: 2
     environment:
       - DJANGO_SETTINGS_MODULE=backend.settings.production
-      - DJANGO_SECRET_KEY=e7f9cd41df74c4ce3fa167ddd2e31cd6975b07ad395cc6265379097c6d8b961f
+      - DJANGO_SECRET_KEY=cb63988eec979e50d9d63472da119f56d34c010ec87ac45736941b884e9e5051
       - DJANGO_DEBUG=False
       - DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1,kairos.gr,www.kairos.gr
       - POSTGRES_DB=aethradb
@@ -33,6 +34,7 @@ services:
       - aethra_network
     depends_on:
       - db
+
   frontend:
     image: aethra_frontend:latest
     build:
@@ -40,28 +42,41 @@ services:
       dockerfile: Dockerfile
     networks:
       - aethra_network
-  nginx:
+
+  nginx-backend:
     image: nginx:latest
     ports:
-      - "80:80"
-      - "443:443"
+      - "8080:80"
     volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf:ro
-      - ./certbot/conf:/etc/letsencrypt
-      - ./certbot/www:/var/www/certbot
+      - ./nginx-backend.conf:/etc/nginx/nginx.conf:ro
       - static_volume:/app/staticfiles:ro
-      - frontend_build:/usr/share/nginx/html:ro
     deploy:
       replicas: 1
     networks:
       - aethra_network
     depends_on:
       - backend
+
+  nginx-frontend:
+    image: aethra_frontend:latest
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx-frontend.conf:/etc/nginx/nginx.conf:ro
+      - ./certbot/conf:/etc/letsencrypt:ro
+      - ./certbot/www:/var/www/certbot:ro
+    deploy:
+      replicas: 1
+    networks:
+      - aethra_network
+    depends_on:
       - frontend
+
 networks:
   aethra_network:
     driver: overlay
+
 volumes:
   postgres_data:
   static_volume:
-  frontend_build:

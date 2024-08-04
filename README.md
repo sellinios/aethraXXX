@@ -3,7 +3,7 @@ pip freeze > requirements.txt
 docker info | grep Swarm
 docker service ls
 docker ps 
-docker exec -it XXXX_ID bash
+docker exec -it (ID here) bash
 docker stack deploy -c docker-stack.yml aethra
 ./deploy-swarm.sh
 
@@ -22,5 +22,5 @@ tree -L 5 -I 'node_modules|build|venv|staticfiles'
 docker stack rm aethra
 docker system prune -a
 
-docker exec -it $(docker ps -q -f name=aethra_backend.1) /bin/bash
+docker exec -it $(docker ps --filter name=aethra_backend -q | head -n1) python manage.py collectstatic --noinput
 python manage.py migrate

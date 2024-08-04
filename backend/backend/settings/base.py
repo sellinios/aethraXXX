@@ -5,7 +5,7 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'your-secret-key-here')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DJANGO_DEBUG', 'False').lower() in ['true', 't', '1']
@@ -86,6 +86,14 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# Define STATICFILES_DIRS
+STATICFILES_DIRS = []
+
+# Add the 'static' directory if it exists
+static_dir = BASE_DIR / 'static'
+if static_dir.exists():
+    STATICFILES_DIRS.append(static_dir)
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
