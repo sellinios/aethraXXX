@@ -1,4 +1,5 @@
 version: '3.8'
+
 services:
   db:
     image: postgres:16.3
@@ -6,9 +7,9 @@ services:
       - postgres_data:/var/lib/postgresql/data
       - ./init-postgres.sh:/docker-entrypoint-initdb.d/init-postgres.sh
     environment:
-      - POSTGRES_DB=aethradb
-      - POSTGRES_USER=sellinios
-      - POSTGRES_PASSWORD=faidra6946020623
+      POSTGRES_DB: aethradb
+      POSTGRES_USER: sellinios
+      POSTGRES_PASSWORD: faidra6946020623
     networks:
       - aethra_network
 
@@ -17,17 +18,17 @@ services:
     deploy:
       replicas: 2
     environment:
-      - DJANGO_SETTINGS_MODULE=backend.settings.production
-      - DJANGO_SECRET_KEY=cb63988eec979e50d9d63472da119f56d34c010ec87ac45736941b884e9e5051
-      - DJANGO_DEBUG=False
-      - DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1,kairos.gr,www.kairos.gr
-      - POSTGRES_DB=aethradb
-      - POSTGRES_USER=sellinios
-      - POSTGRES_PASSWORD=faidra6946020623
-      - POSTGRES_HOST=db
-      - POSTGRES_PORT=5432
-      - CORS_ALLOWED_ORIGINS=https://kairos.gr,https://www.kairos.gr
-      - CSRF_TRUSTED_ORIGINS=https://kairos.gr,https://www.kairos.gr
+      DJANGO_SETTINGS_MODULE: backend.settings.production
+      DJANGO_SECRET_KEY: 8887ee341cf6596d53c1baaa2e553d3d7216a06f89666204e037d819264dc608
+      DJANGO_DEBUG: 'False'
+      DJANGO_ALLOWED_HOSTS: localhost,127.0.0.1,api.kairos.gr,admin.kairos.gr
+      POSTGRES_DB: aethradb
+      POSTGRES_USER: sellinios
+      POSTGRES_PASSWORD: faidra6946020623
+      POSTGRES_HOST: db
+      POSTGRES_PORT: 5432
+      CORS_ALLOWED_ORIGINS: https://kairos.gr,https://www.kairos.gr
+      CSRF_TRUSTED_ORIGINS: https://kairos.gr,https://www.kairos.gr,https://api.kairos.gr,https://admin.kairos.gr
     volumes:
       - static_volume:/app/staticfiles
     networks:
@@ -37,28 +38,32 @@ services:
 
   frontend:
     image: aethra_frontend:latest
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
     networks:
       - aethra_network
+    volumes:
+      - frontend_build:/usr/share/nginx/html:ro
 
   nginx-backend:
     image: nginx:latest
     ports:
       - "8080:80"
+      - "4443:443"
     volumes:
       - ./nginx-backend.conf:/etc/nginx/nginx.conf:ro
+      - ./certbot/conf:/etc/letsencrypt:ro
+      - ./certbot/www:/var/www/certbot:ro
       - static_volume:/app/staticfiles:ro
     deploy:
       replicas: 1
+      restart_policy:
+        condition: on-failure
     networks:
       - aethra_network
     depends_on:
       - backend
 
   nginx-frontend:
-    image: aethra_frontend:latest
+    image: nginx:latest
     ports:
       - "80:80"
       - "443:443"
@@ -66,6 +71,7 @@ services:
       - ./nginx-frontend.conf:/etc/nginx/nginx.conf:ro
       - ./certbot/conf:/etc/letsencrypt:ro
       - ./certbot/www:/var/www/certbot:ro
+      - frontend_build:/usr/share/nginx/html:ro
     deploy:
       replicas: 1
     networks:
@@ -80,3 +86,4 @@ networks:
 volumes:
   postgres_data:
   static_volume:
+  frontend_build:
