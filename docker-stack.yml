@@ -19,7 +19,7 @@ services:
       replicas: 2
     environment:
       DJANGO_SETTINGS_MODULE: backend.settings.production
-      DJANGO_SECRET_KEY: 8887ee341cf6596d53c1baaa2e553d3d7216a06f89666204e037d819264dc608
+      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
       DJANGO_DEBUG: 'False'
       DJANGO_ALLOWED_HOSTS: localhost,127.0.0.1,api.kairos.gr,admin.kairos.gr
       POSTGRES_DB: aethradb
@@ -38,13 +38,13 @@ services:
 
   frontend:
     image: aethra_frontend:latest
+    deploy:
+      replicas: 1
     networks:
       - aethra_network
-    volumes:
-      - frontend_build:/usr/share/nginx/html:ro
 
   nginx-backend:
-    image: nginx:latest
+    image: nginx:alpine
     ports:
       - "8080:80"
       - "4443:443"
@@ -55,15 +55,13 @@ services:
       - static_volume:/app/staticfiles:ro
     deploy:
       replicas: 1
-      restart_policy:
-        condition: on-failure
     networks:
       - aethra_network
     depends_on:
       - backend
 
   nginx-frontend:
-    image: nginx:latest
+    image: nginx:alpine
     ports:
       - "80:80"
       - "443:443"
