@@ -1,3 +1,5 @@
+# backend/backend/settings/local.py
+
 from .base import *
 
 # Override database settings for local development
@@ -8,9 +10,19 @@ DATABASES = {
     }
 }
 
-# Other local settings can go here
-
-# For example, you might want to set DEBUG to True explicitly in local settings
+# Set DEBUG to True explicitly for local development
 DEBUG = True
 
-# Optionally, you can also add other settings specific to your local environment
+# Add localhost to ALLOWED_HOSTS
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+
+# CORS settings for local development
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:3000',  # If your React app runs on port 3000
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    'http://localhost:3000',
+]
+
+# Other local settings can go here

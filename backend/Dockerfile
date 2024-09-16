@@ -1,3 +1,5 @@
+# backend/Dockerfile
+
 FROM python:3.12-slim
 
 # Environment variables
@@ -11,23 +13,28 @@ RUN apt-get update && apt-get install -y \
     libpq-dev \
     gdal-bin \
     libgdal-dev \
+    proj-bin \
+    libproj-dev \
+    libgeos-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# Set the GDAL library path
-ENV GDAL_LIBRARY_PATH /usr/lib/libgdal.so
+# Set the GDAL and PROJ library paths
+ENV LD_LIBRARY_PATH=/usr/lib
 
 # Set work directory
 WORKDIR /app
 
-# Install Python dependencies
+# Copy requirements.txt
 COPY requirements.txt /app/
+
+# Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy project
 COPY . /app/
 
-# Collect static files
-RUN python manage.py collectstatic --noinput
+# Expose port
+EXPOSE 8000
 
 # Run the application
 CMD ["gunicorn", "--bind", "0.0.0.0:8000", "backend.wsgi:application"]
